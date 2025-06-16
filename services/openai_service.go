@@ -26,12 +26,12 @@ type (
 	}
 )
 
-func NewOpenAIService(repo repositories.Repository, apiKey string) OpenAIService {
+func NewOpenAIService(repo repositories.Repository, openAIClient *openai.Client, apiKey string) OpenAIService {
 	return &openAIService{
 		service: &service[repositories.Repository]{
 			repository: repo,
 		},
-		client: openai.NewClient(apiKey),
+		client: openAIClient,
 		apiKey: apiKey,
 	}
 }
