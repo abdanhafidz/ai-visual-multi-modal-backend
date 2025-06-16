@@ -11,6 +11,7 @@ import (
 )
 
 type ReplicateService interface {
+	Service
 	AskImage(ctx context.Context, imageFile multipart.File, filename, question string) string
 }
 
@@ -27,20 +28,20 @@ func NewReplicateService(repo repositories.Repository, replicateClient *replicat
 		model:   model, // e.g., "owner/moondream:versionHash"
 	}
 	return &service
-
 }
 
-func (r *replicateService) AskImage(ctx context.Context, imageFile multipart.File, filename, question string) string {
+func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.File, filename, question string) string {
 	var buf bytes.Buffer
 	if _, err := io.Copy(&buf, imageFile); err != nil {
-		r.ThrowsError(err)
+
+		s.ThrowsError(err)
 		return ""
 	}
 
 	// Upload file ke replicate
-	file, err := r.client.CreateFileFromBuffer(ctx, &buf, &replicate.CreateFileOptions{Filename: filename})
+	file, err := s.client.CreateFileFromBuffer(ctx, &buf, &replicate.CreateFileOptions{Filename: filename})
 	if err != nil {
-		r.ThrowsError(err)
+		s.ThrowsError(err)
 		return ""
 	}
 
@@ -51,9 +52,9 @@ func (r *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 	}
 
 	// Jalankan prediksi, tunggu selesai
-	output, err := r.client.Run(ctx, r.model, input, nil)
+	output, err := s.client.Run(ctx, s.model, input, nil)
 	if err != nil {
-		r.ThrowsError(err)
+		s.ThrowsError(err)
 		return ""
 	}
 

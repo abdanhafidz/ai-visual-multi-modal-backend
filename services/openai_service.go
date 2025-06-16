@@ -50,7 +50,7 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 	outFile, err := os.Create(savedPath)
 
 	if err != nil {
-		s.ThrowsException(&s.exception.BadRequest, "Failed to save audio!")
+		s.ThrowsException(&s.exception.AudioFileError, "Failed to save audio!")
 		s.ThrowsError(err)
 		return "Failed to save audio!"
 	}
@@ -58,7 +58,7 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 	defer outFile.Close()
 
 	if _, err := io.Copy(outFile, audioFile); err != nil {
-		s.ThrowsException(&s.exception.InternalServerError, "Failed to save audio!")
+		s.ThrowsException(&s.exception.AudioFileError, "Failed to save audio!")
 		s.ThrowsError(err)
 		return "Failed to save audio!"
 	}
@@ -70,7 +70,7 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 
 	resp, err := s.client.CreateTranscription(ctx, req)
 	if err != nil {
-		s.ThrowsException(&s.exception.InternalServerError, "Failed to create transcription!")
+		s.ThrowsException(&s.exception.FailedTranscripting, "Failed to create transcription!")
 		s.ThrowsError(err)
 		return "Failed to create transcription!"
 	}
@@ -93,14 +93,14 @@ func (s *openAIService) TextToSpeech(ctx context.Context, text string) []byte {
 
 	audioResp, err := s.client.CreateSpeech(ctx, req)
 	if err != nil {
-		s.ThrowsException(&s.exception.InternalServerError, "Failed to generate speech audio!")
+		s.ThrowsException(&s.exception.FailedGenerateAudio, "Failed to generate speech audio!")
 		s.ThrowsError(err)
 		return nil
 	}
 
 	audioData, err := io.ReadAll(audioResp)
 	if err != nil {
-		s.ThrowsException(&s.exception.InternalServerError, "Failed to read audio response!")
+		s.ThrowsException(&s.exception.AudioFileError, "Failed to read audio response!")
 		s.ThrowsError(err)
 		return nil
 	}
