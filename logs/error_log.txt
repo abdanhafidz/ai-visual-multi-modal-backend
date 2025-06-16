@@ -1,0 +1,19 @@
+2025/06/16 23:53:52 Error Log : open audio: is a directory
+2025/06/16 23:54:20 Error Log : open audio: is a directory
+open audio: is a directory
+open audio: is a directory
+2025/06/16 23:54:37 Error Log : open audio: is a directory
+open audio: is a directory
+open audio: is a directory
+open audio: is a directory
+open audio: is a directory
+open audio: is a directory
+2025/06/16 23:56:46 Error Log : open audio: is a directory
+2025/06/16 23:57:43 Error Log : open audio: is a directory
+2025/06/17 00:00:14 Error Log : open audio: is a directory
+2025/06/17 00:01:06 Error Log : error, status code: 429, status: 429 Too Many Requests, message: You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+2025/06/17 00:16:55 Error Log : remove audio\20250616_235223.mp3: The process cannot access the file because it is being used by another process.
+2025/06/17 00:29:21 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]
+2025/06/17 00:30:56 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]
+2025/06/17 00:32:14 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]
+2025/06/17 00:33:03 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]

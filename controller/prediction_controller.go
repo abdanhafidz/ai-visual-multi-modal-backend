@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"mime/multipart"
 
 	models "github.com/abdanhafidz/ai-visual-multi-modal-backend/models"
@@ -37,13 +38,14 @@ func requestImage(ctx *gin.Context, image *multipart.File, imageFilename *string
 		})
 		return
 	}
-	image = &imageFile
-	imageFilename = &imageHeader.Filename
+	*image = imageFile
+	*imageFilename = imageHeader.Filename
 	defer imageFile.Close()
 }
 
 func requestAudio(ctx *gin.Context, audio *multipart.File, audioFilename *string) {
 	audioHeader, err := ctx.FormFile("audio_file")
+	fmt.Println(audioHeader.Filename)
 	if err != nil {
 		utils.ResponseFAIL(ctx, 400, models.Exception{
 			BadRequest: true,
@@ -59,8 +61,8 @@ func requestAudio(ctx *gin.Context, audio *multipart.File, audioFilename *string
 		})
 		return
 	}
-	audio = &audioFile
-	audioFilename = &audioHeader.Filename
+	*audio = audioFile
+	*audioFilename = audioHeader.Filename
 	defer audioFile.Close()
 }
 
@@ -76,6 +78,7 @@ func (c *predictionController) Predict(ctx *gin.Context) {
 	var predictionRequest models.PredictionRequest
 	requestImage(ctx, &predictionRequest.ImageFile, &predictionRequest.ImageFileName)
 	requestAudio(ctx, &predictionRequest.AudioQuestionFile, &predictionRequest.AudioQuestionFilename)
+	fmt.Println(predictionRequest)
 	predictionResult := c.service.Predict(ctx, predictionRequest)
 
 	if c.service.Error() != nil {

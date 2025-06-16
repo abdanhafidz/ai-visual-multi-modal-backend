@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"mime/multipart"
 
@@ -38,25 +39,30 @@ func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 		return ""
 	}
 
-	// Upload file ke replicate
 	file, err := s.client.CreateFileFromBuffer(ctx, &buf, &replicate.CreateFileOptions{Filename: filename})
 	if err != nil {
 		s.ThrowsError(err)
 		return ""
 	}
 
-	// Input untuk model Moondream
 	input := replicate.PredictionInput{
 		"image":    file,
 		"question": question,
 	}
-
-	// Jalankan prediksi, tunggu selesai
-	output, err := s.client.Run(ctx, s.model, input, nil)
+	rawOutput, err := s.client.Run(ctx, s.model, input, nil)
 	if err != nil {
 		s.ThrowsError(err)
 		return ""
 	}
 
-	return output.(string)
+	outputSlice, _ := rawOutput.([]interface{})
+	result := fmt.Sprintf("%v", outputSlice)
+	fmt.Println("Output slice", result)
+
+	// if !ok {
+	// 	s.ThrowsError(errors.New("failed to parse output as string"))
+	// 	return ""
+	// }
+
+	return result
 }

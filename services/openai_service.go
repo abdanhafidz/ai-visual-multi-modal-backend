@@ -73,10 +73,10 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 		return "Failed to create transcription!"
 	}
 
-	// Privacy Consideration bro!
-	if err := os.Remove(savedPath); err != nil {
-		s.ThrowsError(err)
-	}
+	// // Privacy Consideration bro!
+	// if err := os.Remove(savedPath); err != nil {
+	// 	s.ThrowsError(err)
+	// }
 
 	return resp.Text
 }
