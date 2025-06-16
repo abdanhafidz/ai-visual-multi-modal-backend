@@ -18,9 +18,11 @@ type authController struct {
 }
 
 func NewAuthController(authenticationService services.AuthenticationService) AuthController {
-	controller := authController{}
-	controller.service = authenticationService
-	return &controller
+	return &authController{
+		controller: &controller[services.AuthenticationService]{
+			service: authenticationService,
+		},
+	}
 }
 func (c *authController) Login(ctx *gin.Context) {
 	var loginRequest models.LoginRequest

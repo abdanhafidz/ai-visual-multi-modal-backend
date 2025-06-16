@@ -65,9 +65,11 @@ func requestAudio(ctx *gin.Context, audio *multipart.File, audioFilename *string
 }
 
 func NewPredictionController(predictionService services.PredictionService) PredictionController {
-	controller := predictionController{}
-	controller.service = predictionService
-	return &controller
+	return &predictionController{
+		controller: &controller[services.PredictionService]{
+			service: predictionService,
+		},
+	}
 }
 func (c *predictionController) Predict(ctx *gin.Context) {
 

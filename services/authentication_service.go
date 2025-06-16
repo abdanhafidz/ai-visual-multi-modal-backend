@@ -21,10 +21,11 @@ type authenticationService struct {
 }
 
 func NewAuthenticationService(accountRepository repositories.AccountRepository, userProfileService UserProfileService) AuthenticationService {
-	service := authenticationService{}
-	service.repository = accountRepository
-	service.userProfileService = userProfileService
-	return &service
+	return &authenticationService{
+		service: &service[repositories.AccountRepository]{
+			repository: accountRepository,
+		},
+	}
 }
 func (s *authenticationService) Authenticate(ctx context.Context, email string, password string) (res models.AuthenticatedUser) {
 	account := s.repository.GetAccountByEmail(ctx, email)

@@ -16,9 +16,11 @@ type userController struct {
 }
 
 func NewUserController(userProfileService services.UserProfileService) UserController {
-	controller := userController{}
-	controller.service = userProfileService
-	return &controller
+	return &userController{
+		controller: &controller[services.UserProfileService]{
+			service: userProfileService,
+		},
+	}
 }
 func (c *userController) GetProfile(ctx *gin.Context) {
 	c.HeaderParse(ctx)

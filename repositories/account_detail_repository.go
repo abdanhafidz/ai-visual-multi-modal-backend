@@ -18,8 +18,11 @@ type accountDetailRepository struct {
 }
 
 func NewAccountDetailRepository() AccountDetailRepository {
-	repo := accountDetailRepository{}
-	repo.entity = models.AccountDetails{}
+	repo := accountDetailRepository{
+		repository: &repository[models.AccountDetails]{
+			entity: models.AccountDetails{},
+		},
+	}
 	return &repo
 }
 func (r *accountDetailRepository) CreateAccountDetail(ctx context.Context, account_id uint) (res models.AccountDetails) {
