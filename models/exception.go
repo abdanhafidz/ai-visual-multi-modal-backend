@@ -10,7 +10,7 @@ type Exception struct {
 	InvalidPasswordLength      bool   `json:"invalid_password_length,omitempty"`
 	FailedTranscripting        bool   `json:"failed_transcripting,omitempty"`
 	ReplicateConnectionRefused bool   `json:"replicated_connection_refused,omitempty"`
-	AudioFileError             bool   `json:audio_file_error,omitempty`
-	FailedGenerateAudio        bool   `json:audio_generation_failed,omitempty`
+	AudioFileError             bool   `json:"audio_file_error,omitempty"`
+	FailedGenerateAudio        bool   `json:"audio_generation_failed,omitempty"`
 	Message                    string `json:"message"`
 }

@@ -14,12 +14,19 @@ type (
 	}
 
 	predictionService struct {
-		service[repositories.Repository]
+		*service[repositories.Repository]
 		replicateService ReplicateService
 		openAIService    OpenAIService
 	}
 )
 
+func NewPredictionService(replicateService ReplicateService, openAIService OpenAIService) PredictionService {
+	return &predictionService{
+		service:          &service[repositories.Repository]{},
+		replicateService: replicateService,
+		openAIService:    openAIService,
+	}
+}
 func (s *predictionService) Predict(ctx context.Context, req models.PredictionRequest) []byte {
 	sttOutput := s.openAIService.SpeechToText(ctx, req.AudioQuestionFile, req.AudioQuestionFilename)
 	if s.openAIService.Error() != nil {

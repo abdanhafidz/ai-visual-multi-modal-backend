@@ -10,5 +10,6 @@ func StartService() {
 	router := gin.Default()
 	router.GET("/", controller.HomeController)
 	UserRoute(router)
+	PredictionRoute(router)
 	router.Run(config.TCP_ADDRESS)
 }

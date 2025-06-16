@@ -16,7 +16,6 @@ type (
 	openAIService struct {
 		*service[repositories.Repository]
 		client *openai.Client
-		apiKey string
 	}
 
 	OpenAIService interface {
@@ -26,13 +25,12 @@ type (
 	}
 )
 
-func NewOpenAIService(repo repositories.Repository, openAIClient *openai.Client, apiKey string) OpenAIService {
+func NewOpenAIService(repo repositories.Repository, openAIClient *openai.Client) OpenAIService {
 	return &openAIService{
 		service: &service[repositories.Repository]{
 			repository: repo,
 		},
 		client: openAIClient,
-		apiKey: apiKey,
 	}
 }
 

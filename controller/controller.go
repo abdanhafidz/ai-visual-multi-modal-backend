@@ -41,6 +41,7 @@ func (c *controller[TService]) RequestJSON(ctx *gin.Context, request any) {
 		return
 	}
 }
+
 func (c *controller[TService]) Response(ctx *gin.Context, res any) {
 	switch {
 	case c.service.Error() != nil:
