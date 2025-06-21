@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 
+	"github.com/abdanhafidz/ai-visual-multi-modal-backend/config"
 	"github.com/abdanhafidz/ai-visual-multi-modal-backend/models"
 )
 
@@ -18,7 +19,8 @@ type chatHistoryRepository struct {
 func NewChatHistoryRepository() ChatHistoryRepository {
 	return &chatHistoryRepository{
 		repository: &repository[models.ChatHistory]{
-			entity: models.ChatHistory{},
+			transaction: config.DB.Begin(),
+			entity:      models.ChatHistory{},
 		},
 	}
 }

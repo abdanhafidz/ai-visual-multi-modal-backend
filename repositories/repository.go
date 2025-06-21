@@ -60,8 +60,7 @@ func (repo *repository[T1]) Transactions(ctx context.Context, act func(ctx conte
 	repo.Unlock()
 }
 func (repo *repository[T1]) Where(ctx context.Context) {
-
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.WithContext(ctx).Where(&repo.entity)
 	repo.Lock()
 	repo.rowsCount = int(tx.RowsAffected)
@@ -71,7 +70,7 @@ func (repo *repository[T1]) Where(ctx context.Context) {
 }
 func (repo *repository[T1]) Find(ctx context.Context, res any) {
 	repo.Lock()
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.WithContext(ctx).Find(&res)
 	if tx.Error != nil {
 		tx.Rollback()
@@ -85,7 +84,7 @@ func (repo *repository[T1]) Find(ctx context.Context, res any) {
 
 func (repo *repository[T1]) FindAllPaginate(ctx context.Context, res any) {
 
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.WithContext(ctx).Limit(repo.pagination.limit).Offset(repo.pagination.offset).Find(&res)
 	if tx.Error != nil {
 		tx.Rollback()
@@ -99,7 +98,7 @@ func (repo *repository[T1]) FindAllPaginate(ctx context.Context, res any) {
 
 func (repo *repository[T1]) Create(ctx context.Context) {
 
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.Create(&repo.entity).Find(&repo.entity)
 	if tx.Error != nil {
 		tx.Rollback()
@@ -113,7 +112,7 @@ func (repo *repository[T1]) Create(ctx context.Context) {
 
 func (repo *repository[T1]) Update(ctx context.Context) {
 
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.WithContext(ctx).Save(&repo.entity).Find(&repo.entity)
 	if tx.Error != nil {
 		tx.Rollback()
@@ -127,7 +126,7 @@ func (repo *repository[T1]) Update(ctx context.Context) {
 
 func (repo *repository[T1]) Delete(ctx context.Context) {
 
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.WithContext(ctx).Delete(&repo.entity)
 	if tx.Error != nil {
 		tx.Rollback()
@@ -141,7 +140,7 @@ func (repo *repository[T1]) Delete(ctx context.Context) {
 
 func (repo *repository[T1]) Query(ctx context.Context, res any) {
 
-	tx := repo.transaction.Begin()
+	tx := repo.transaction
 	tx.WithContext(ctx).Model(&repo.entity).Raw(repo.customQuery.sql, repo.customQuery.values).Scan(&res)
 	if tx.Error != nil {
 		tx.Rollback()
