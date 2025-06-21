@@ -14,8 +14,7 @@ RUN go mod download
 COPY . .
 
 # Buat file .env dengan variabel environment menggunakan Hugging Face secrets
-RUN --mount=type=secret,id=HF_TOKEN,mode=0444,required=true \
-    --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
+RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     --mount=type=secret,id=OPENAI_API_KEY,mode=0444,required=false \
     --mount=type=secret,id=REPLICATE_API_TOKEN,mode=0444,required=false \
     echo "DB_HOST=aws-0-ap-southeast-1.pooler.supabase.com" >> .env && \
