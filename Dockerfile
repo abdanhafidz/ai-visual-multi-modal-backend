@@ -1,6 +1,9 @@
 # Gunakan image dasar Golang versi 1.24.1
 FROM golang:1.24.1
 
+# Tambahkan user non-root untuk keamanan (optional tapi best practice)
+RUN useradd -m -u 1001 appuser
+
 # Set working directory
 WORKDIR /app
 
@@ -29,18 +32,16 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "EMAIL_VERIFICATION_DURATION=2" >> .env && \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
     echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
-    
-RUN mkdir -p /app/audio && \
-    chmod 777 /app/audio && \
-    chown -R /app/audio/*
 
-RUN mkdir -p /app/logs && \
-    chmod -R 777 /app/logs && \
-    chown -R /app/logs/*
+# Buat direktori audio dan logs, beri izin dan kepemilikan ke appuser
+RUN mkdir -p /app/audio /app/logs && \
+    chmod -R 777 /app/audio /app/logs && \
+    chown -R appuser:appuser /app/audio /app/logs
 
 # Build aplikasi
 RUN go build -o main .
 
+# Beralih ke user non-root
 USER appuser
 
 # Expose port untuk Hugging Face Spaces
