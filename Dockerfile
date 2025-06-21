@@ -29,9 +29,19 @@ RUN --mount=type=secret,id=HF_TOKEN,mode=0444,required=true \
     echo "LOG_PATH=logs" >> .env && \
     echo "EMAIL_VERIFICATION_DURATION=2" >> .env && \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
-    echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env && \
+    echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
+
+RUN mkdir -p /app/audio && \
+    chmod 777 /app/audio && \
+    chown -R $(whoami):$(whoami) /app/audio
+
+RUN mkdir -p /app/logs && \
+    chmod +rwx /app/logs && \
+    chown -R $(whoami):$(whoami) /app/logs
+    
 # Build aplikasi
 RUN go build -o main .
+
 
 # Expose port untuk Hugging Face Spaces
 EXPOSE 7860
