@@ -20,9 +20,11 @@ type (
 	}
 )
 
-func NewPredictionService(replicateService ReplicateService, openAIService OpenAIService) PredictionService {
+func NewPredictionService(chatHistoryRepository repositories.ChatHistoryRepository, replicateService ReplicateService, openAIService OpenAIService) PredictionService {
 	return &predictionService{
-		service:          &service[repositories.ChatHistoryRepository]{},
+		service: &service[repositories.ChatHistoryRepository]{
+			repository: chatHistoryRepository,
+		},
 		replicateService: replicateService,
 		openAIService:    openAIService,
 	}

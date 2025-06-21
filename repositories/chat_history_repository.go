@@ -15,6 +15,13 @@ type chatHistoryRepository struct {
 	*repository[models.ChatHistory]
 }
 
+func NewChatHistoryRepository() ChatHistoryRepository {
+	return &chatHistoryRepository{
+		repository: &repository[models.ChatHistory]{
+			entity: models.ChatHistory{},
+		},
+	}
+}
 func (r *chatHistoryRepository) SaveChatHistory(ctx context.Context, imagePath string, question string, answer string) (res models.ChatHistory) {
 	r.entity.ImagePath = imagePath
 	r.entity.Question = question
