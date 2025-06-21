@@ -54,10 +54,16 @@ func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 		s.ThrowsError(err)
 		return ""
 	}
-
-	outputSlice, _ := rawOutput.([]interface{})
-	result := fmt.Sprintf("%v", outputSlice)
-	fmt.Println("Output slice", result)
+	fmt.Println("Output slice", rawOutput)
+	outputSlice, ok := rawOutput.([]interface{})
+	var result string
+	if ok {
+		result = fmt.Sprintf("%v", outputSlice)
+		fmt.Println("Output slice", result)
+	} else {
+		result = fmt.Sprintf("%v", rawOutput)
+		fmt.Println("Output slice", result)
+	}
 
 	// if !ok {
 	// 	s.ThrowsError(errors.New("failed to parse output as string"))

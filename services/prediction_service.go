@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 
 	models "github.com/abdanhafidz/ai-visual-multi-modal-backend/models"
 	repositories "github.com/abdanhafidz/ai-visual-multi-modal-backend/repositories"
@@ -38,6 +39,7 @@ func (s *predictionService) Predict(ctx context.Context, req models.PredictionRe
 		return nil, ""
 	}
 
+	fmt.Println("Input :", sttOutput)
 	replicateOutput := s.replicateService.AskImage(ctx, req.ImageFile, req.ImageFileName, sttOutput)
 	if s.replicateService.Error() != nil {
 		s.ThrowsException(&s.exception.ReplicateConnectionRefused, "Replicate Connection Refused!")

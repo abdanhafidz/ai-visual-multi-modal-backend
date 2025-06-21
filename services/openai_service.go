@@ -89,7 +89,7 @@ func (s *openAIService) TextToSpeech(ctx context.Context, text string) []byte {
 	req := openai.CreateSpeechRequest{
 		Model:          openai.TTSModel1,
 		Input:          text,
-		Voice:          openai.VoiceNova,
+		Voice:          openai.VoiceEcho,
 		ResponseFormat: openai.SpeechResponseFormatMp3,
 	}
 
