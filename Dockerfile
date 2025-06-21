@@ -28,7 +28,7 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "LOG_PATH=logs" >> .env && \
     echo "EMAIL_VERIFICATION_DURATION=2" >> .env && \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
-    echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env && \
+    echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
 # Build aplikasi
 RUN go build -o main .
 
