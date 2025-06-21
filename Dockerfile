@@ -33,7 +33,11 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
 RUN mkdir -p /app/audio && \
     chmod 777 /app/audio && \
     chown -R $(whoami):$(whoami) /app/audio
-    
+
+RUN mkdir -p /app/logs && \
+    chmod 777 /app/logs && \
+    chown -R $(whoami):$(whoami) /app/logs
+
 # Build aplikasi
 RUN go build -o main .
 
