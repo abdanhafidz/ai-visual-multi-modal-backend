@@ -79,8 +79,8 @@ func (c *predictionController) Predict(ctx *gin.Context) {
 
 	requestImage(ctx, &predictionRequest.ImageFile, &predictionRequest.ImageFileName)
 	requestAudio(ctx, &predictionRequest.AudioQuestionFile, &predictionRequest.AudioQuestionFilename)
-	
-	predictionResult := c.service.Predict(ctx, predictionRequest)
+
+	predictionResult, text_output := c.service.Predict(ctx, predictionRequest)
 
 	if c.service.Error() != nil {
 		c.Response(ctx, nil)
@@ -89,6 +89,7 @@ func (c *predictionController) Predict(ctx *gin.Context) {
 
 	ctx.Header("Content-Type", "audio/mpeg")
 	ctx.Header("Content-Disposition", "inline; filename=response.mp3")
+	ctx.Header("X-Response-Text", text_output)
 	ctx.Data(200, "audio/mpeg", predictionResult)
 
 }

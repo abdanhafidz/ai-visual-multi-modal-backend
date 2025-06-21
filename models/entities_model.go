@@ -17,6 +17,7 @@ type ChatHistory struct {
 	ID        uuid.UUID  `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	ImagePath string     `gorm:"type:text"`
 	Question  string     `gorm:"type:text"`
+	Answer    string     `gorm:"type:text"`
 	CreatedAt time.Time  `gorm:"column:created_at"`
 	DeletedAt *time.Time `gorm:"column:deleted_at"`
 }

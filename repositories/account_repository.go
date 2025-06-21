@@ -7,6 +7,7 @@ import (
 )
 
 type AccountRepository interface {
+	Repository
 	CreateAccount(ctx context.Context, fingerPrint string) (res models.Account)
 	GetAccountByFingerPrint(ctx context.Context, fingePrint string) (res models.Account)
 }
