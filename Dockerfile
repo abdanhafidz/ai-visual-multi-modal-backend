@@ -30,6 +30,10 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
     echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
     
+RUN mkdir -p /app/audio && \
+    chmod 777 /app/audio && \
+    chown -R $(whoami):$(whoami) /app/audio
+    
 # Build aplikasi
 RUN go build -o main .
 
