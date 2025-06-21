@@ -32,14 +32,16 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     
 RUN mkdir -p /app/audio && \
     chmod 777 /app/audio && \
-    chown -R $(whoami):$(whoami) /app/audio
+    chown -R /app/audio/*
 
 RUN mkdir -p /app/logs && \
-    chmod +rwx /app/logs && \
-    chown -R $(whoami):$(whoami) /app/logs
+    chmod -R 777 /app/logs && \
+    chown -R /app/logs/*
 
 # Build aplikasi
 RUN go build -o main .
+
+USER appuser
 
 # Expose port untuk Hugging Face Spaces
 EXPOSE 7860
