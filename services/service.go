@@ -2,16 +2,15 @@ package services
 
 import (
 	"errors"
-	"sync"
 	"time"
 
 	models "github.com/abdanhafidz/ai-visual-multi-modal-backend/models"
 	repositories "github.com/abdanhafidz/ai-visual-multi-modal-backend/repositories"
+	"gorm.io/gorm"
 )
 
 type (
 	service[TRepo repositories.Repository] struct {
-		sync.Mutex
 		repository TRepo
 		exception  models.Exception
 		errors     error
@@ -26,16 +25,16 @@ type (
 )
 
 func (s *service[TRepo]) ThrowsException(status *bool, message string) {
-	s.Lock()
+
 	*status = true
 	s.exception.Message = message
-	s.Unlock()
+
 }
 
 func (s *service[TRepo]) ThrowsError(err error) {
-	s.Lock()
+
 	s.errors = errors.Join(s.errors, err)
-	s.Unlock()
+
 }
 
 func (s *service[TRepo]) Exception() models.Exception {
@@ -49,15 +48,24 @@ func CalculateDueTime(duration time.Duration) time.Time {
 }
 
 func (s *service[TRepo]) ThrowsRepoException() bool {
-	s.Lock()
+
 	if s.repository.RowsError() != nil {
+
+		s.ThrowsException(&s.exception.QueryError, "Database error!")
 		s.ThrowsError(s.repository.RowsError())
+
+		return true
+	}
+	if errors.Is(s.repository.RowsError(), gorm.ErrDuplicatedKey) {
+		s.ThrowsException(&s.exception.DataDuplicate, "Duplicated data!")
+
 		return true
 	}
 	if s.repository.IsNoRecord() {
+
 		s.ThrowsException(&s.exception.DataNotFound, "No record found")
 		return true
 	}
-	s.Unlock()
+
 	return false
 }

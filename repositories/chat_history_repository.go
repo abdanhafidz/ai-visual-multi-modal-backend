@@ -13,14 +13,13 @@ type ChatHistoryRepository interface {
 }
 
 type chatHistoryRepository struct {
-	*repository[models.ChatHistory]
+	repository[models.ChatHistory]
 }
 
 func NewChatHistoryRepository() ChatHistoryRepository {
 	return &chatHistoryRepository{
-		repository: &repository[models.ChatHistory]{
+		repository: repository[models.ChatHistory]{
 			transaction: config.DB.Begin(),
-			entity:      models.ChatHistory{},
 		},
 	}
 }

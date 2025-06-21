@@ -17,3 +17,10 @@ open audio: is a directory
 2025/06/17 00:30:56 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]
 2025/06/17 00:32:14 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]
 2025/06/17 00:33:03 Error Log : error, status code: 400, status: 400 Bad Request, message: [{'type': 'string_too_short', 'loc': ('body', 'input'), 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]
+2025/06/21 20:30:08 Error Log : remove audio\20250616_235223.mp3: The process cannot access the file because it is being used by another process.
+2025/06/21 21:21:08 Error Log : duplicated key not allowed; invalid transaction
+2025/06/21 21:23:54 Error Log : duplicated key not allowed; invalid transaction
+duplicated key not allowed; invalid transaction; invalid transaction; invalid transaction
+2025/06/21 21:27:10 Error Log : duplicated key not allowed; invalid transaction
+2025/06/21 21:48:34 Error Log : duplicated key not allowed; invalid transaction
+duplicated key not allowed; invalid transaction; invalid transaction; invalid transaction

@@ -72,8 +72,12 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 		s.ThrowsError(err)
 		return "Failed to create transcription!"
 	}
+	// if resp.Text != "" {
+	// 	outFile.Close()
+	// } else {
+	// 	s.ThrowsException(&s.exception.FailedTranscripting, "Failed to create transcription! [Nil text]")
+	// }
 
-	// // Privacy Consideration bro!
 	// if err := os.Remove(savedPath); err != nil {
 	// 	s.ThrowsError(err)
 	// }

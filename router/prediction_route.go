@@ -6,9 +6,11 @@ import (
 )
 
 func PredictionRoute(router *gin.Engine) {
-	predictionModule := factory.NewPredictionModule()
 	routerGroup := router.Group("/api/v1")
 	{
-		routerGroup.POST("/predict", predictionModule.Predict)
+		routerGroup.POST("/predict", func(c *gin.Context) {
+			predictionModule := factory.NewPredictionModule()
+			predictionModule.Predict(c)
+		})
 	}
 }

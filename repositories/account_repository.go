@@ -13,7 +13,7 @@ type AccountRepository interface {
 }
 
 type accountRepository struct {
-	*repository[models.Account]
+	repository[models.Account]
 }
 
 func (r *accountRepository) CreateAccount(ctx context.Context, fingerPrint string) (res models.Account) {

@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"sync"
 
 	"gorm.io/gorm"
 )
@@ -32,7 +31,6 @@ type CustomQueryConstructor struct {
 }
 
 type repository[TEntity any] struct {
-	sync.Mutex
 	entity      TEntity
 	pagination  PaginationConstructor
 	customQuery CustomQueryConstructor
@@ -49,37 +47,37 @@ func (repo *repository[T1]) RowsCount() int {
 	return repo.rowsCount
 }
 func (repo *repository[T1]) IsNoRecord() bool {
-	repo.Lock()
+
 	repo.noRecord = repo.transaction.RowsAffected == 0
-	repo.Unlock()
+
 	return repo.noRecord
 }
 func (repo *repository[T1]) Transactions(ctx context.Context, act func(ctx context.Context, tx *gorm.DB)) {
-	repo.Lock()
+
 	act(ctx, repo.transaction)
-	repo.Unlock()
+
 }
 func (repo *repository[T1]) Where(ctx context.Context) {
 	tx := repo.transaction
 	tx.WithContext(ctx).Where(&repo.entity)
-	repo.Lock()
+
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+
 }
 func (repo *repository[T1]) Find(ctx context.Context, res any) {
-	repo.Lock()
+
 	tx := repo.transaction
 	tx.WithContext(ctx).Find(&res)
 	if tx.Error != nil {
 		tx.Rollback()
 	}
-	repo.Lock()
+
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+
 }
 
 func (repo *repository[T1]) FindAllPaginate(ctx context.Context, res any) {
@@ -89,25 +87,25 @@ func (repo *repository[T1]) FindAllPaginate(ctx context.Context, res any) {
 	if tx.Error != nil {
 		tx.Rollback()
 	}
-	repo.Lock()
+
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+
+	return
+
 }
 
 func (repo *repository[T1]) Create(ctx context.Context) {
 
-	tx := repo.transaction
-	tx.Create(&repo.entity).Find(&repo.entity)
+	tx := repo.transaction.Create(&repo.entity)
 	if tx.Error != nil {
 		tx.Rollback()
 	}
-	repo.Lock()
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+	return
 }
 
 func (repo *repository[T1]) Update(ctx context.Context) {
@@ -117,11 +115,11 @@ func (repo *repository[T1]) Update(ctx context.Context) {
 	if tx.Error != nil {
 		tx.Rollback()
 	}
-	repo.Lock()
+
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+
 }
 
 func (repo *repository[T1]) Delete(ctx context.Context) {
@@ -131,11 +129,11 @@ func (repo *repository[T1]) Delete(ctx context.Context) {
 	if tx.Error != nil {
 		tx.Rollback()
 	}
-	repo.Lock()
+
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+
 }
 
 func (repo *repository[T1]) Query(ctx context.Context, res any) {
@@ -145,9 +143,9 @@ func (repo *repository[T1]) Query(ctx context.Context, res any) {
 	if tx.Error != nil {
 		tx.Rollback()
 	}
-	repo.Lock()
+
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
-	repo.Unlock()
+
 }
