@@ -20,6 +20,7 @@ type (
 		ThrowsException(*bool, string)
 		ThrowsError(error)
 		Exception() models.Exception
+		ThrowsRepoException() bool
 		Error() error
 	}
 )

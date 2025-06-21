@@ -76,9 +76,10 @@ func NewPredictionController(predictionService services.PredictionService) Predi
 func (c *predictionController) Predict(ctx *gin.Context) {
 
 	var predictionRequest models.PredictionRequest
+
 	requestImage(ctx, &predictionRequest.ImageFile, &predictionRequest.ImageFileName)
 	requestAudio(ctx, &predictionRequest.AudioQuestionFile, &predictionRequest.AudioQuestionFilename)
-	fmt.Println(predictionRequest)
+	
 	predictionResult := c.service.Predict(ctx, predictionRequest)
 
 	if c.service.Error() != nil {

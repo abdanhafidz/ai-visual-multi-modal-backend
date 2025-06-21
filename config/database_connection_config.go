@@ -50,11 +50,7 @@ func AutoMigrateAll(db *gorm.DB) {
 	// Auto-migrate all models
 	err := db.AutoMigrate(
 		&models.Account{},
-		&models.AccountDetails{},
-		&models.EmailVerification{},
-		&models.ExternalAuth{},
-		&models.FCM{},
-		&models.ForgotPassword{},
+		&models.ChatHistory{},
 	)
 
 	if err != nil {
