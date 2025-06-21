@@ -19,7 +19,7 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     --mount=type=secret,id=REPLICATE_API_TOKEN,mode=0444,required=false \
     echo "DB_HOST=aws-0-ap-southeast-1.pooler.supabase.com" >> .env && \
     echo "DB_USER=postgres.iuwuiuoisqnfdzlgwurl" >> .env && \
-    echo "DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD 2>/dev/null')" >> .env && \
+    echo "DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD 2>/dev/null)" >> .env && \
     echo "DB_PORT=5432" >> .env && \
     echo "DB_NAME=kpppl" >> .env && \
     echo "SALT=NZNZtY7dNPz8l0dWINJZLKafWaJrql1s" >> .env && \
