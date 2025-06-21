@@ -21,7 +21,7 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "DB_USER=postgres.iuwuiuoisqnfdzlgwurl" >> .env && \
     echo "DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD 2>/dev/null)" >> .env && \
     echo "DB_PORT=5432" >> .env && \
-    echo "DB_NAME=kpppl" >> .env && \
+    echo "DB_NAME=postgres" >> .env && \
     echo "SALT=NZNZtY7dNPz8l0dWINJZLKafWaJrql1s" >> .env && \
     echo "HOST_ADDRESS=0.0.0.0" >> .env && \
     echo "HOST_PORT=7860" >> .env && \
@@ -29,6 +29,7 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "EMAIL_VERIFICATION_DURATION=2" >> .env && \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
     echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
+    
 # Build aplikasi
 RUN go build -o main .
 
