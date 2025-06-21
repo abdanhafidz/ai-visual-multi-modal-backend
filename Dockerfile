@@ -14,15 +14,14 @@ RUN go mod download
 COPY . .
 
 # Buat file .env dengan variabel environment menggunakan Hugging Face secrets
-RUN --mount=type=secret,id=HF_TOKEN,mode=0444,required=true \
-    --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
+RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     --mount=type=secret,id=OPENAI_API_KEY,mode=0444,required=false \
     --mount=type=secret,id=REPLICATE_API_TOKEN,mode=0444,required=false \
     echo "DB_HOST=aws-0-ap-southeast-1.pooler.supabase.com" >> .env && \
     echo "DB_USER=postgres.iuwuiuoisqnfdzlgwurl" >> .env && \
-    echo "DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD 2>/dev/null')" >> .env && \
+    echo "DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD 2>/dev/null)" >> .env && \
     echo "DB_PORT=5432" >> .env && \
-    echo "DB_NAME=kpppl" >> .env && \
+    echo "DB_NAME=postgres" >> .env && \
     echo "SALT=NZNZtY7dNPz8l0dWINJZLKafWaJrql1s" >> .env && \
     echo "HOST_ADDRESS=0.0.0.0" >> .env && \
     echo "HOST_PORT=7860" >> .env && \
@@ -30,7 +29,7 @@ RUN --mount=type=secret,id=HF_TOKEN,mode=0444,required=true \
     echo "EMAIL_VERIFICATION_DURATION=2" >> .env && \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
     echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
-
+    
 RUN mkdir -p /app/audio && \
     chmod 777 /app/audio && \
     chown -R $(whoami):$(whoami) /app/audio
@@ -38,10 +37,9 @@ RUN mkdir -p /app/audio && \
 RUN mkdir -p /app/logs && \
     chmod +rwx /app/logs && \
     chown -R $(whoami):$(whoami) /app/logs
-    
+
 # Build aplikasi
 RUN go build -o main .
-
 
 # Expose port untuk Hugging Face Spaces
 EXPOSE 7860
