@@ -1,7 +1,15 @@
 package models
 
+import (
+	"github.com/golang-jwt/jwt/v4"
+	uuid "github.com/satori/go.uuid"
+)
+
+type JWTCustomClaims struct {
+	IdUser uuid.UUID `json:"user_id" binding:"required"`
+	jwt.RegisteredClaims
+}
+
 type AccountData struct {
-	UserID       int
-	VerifyStatus string
-	ErrVerif     error
+	IdUser uuid.UUID `json:"user_id" binding:"required"`
 }

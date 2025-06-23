@@ -12,5 +12,5 @@ type Exception struct {
 	ReplicateConnectionRefused bool   `json:"replicated_connection_refused,omitempty"`
 	AudioFileError             bool   `json:"audio_file_error,omitempty"`
 	FailedGenerateAudio        bool   `json:"audio_generation_failed,omitempty"`
-	Message                    string `json:"message"`
+	Message                    string `json:"message,omitempty"`
 }

@@ -5,4 +5,5 @@ func RunConfig() {
 	InitializeDatabase()
 	InitializeOpenAIClient()
 	InitializeReplicateClient()
+	InitTurnStileClient()
 }

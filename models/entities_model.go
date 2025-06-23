@@ -7,10 +7,10 @@ import (
 )
 
 type Account struct {
-	ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
-	Fingerprint string    `gorm:"not null;"`
-	CreatedAt   time.Time
-	DeletedAt   *time.Time `gorm:"column:deleted_at"` // perhatikan penamaan kolom
+	ID         uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	PassPhrase string    `gorm:"not null;"`
+	CreatedAt  time.Time
+	DeletedAt  *time.Time `gorm:"column:deleted_at"` // perhatikan penamaan kolom
 }
 
 type ChatHistory struct {

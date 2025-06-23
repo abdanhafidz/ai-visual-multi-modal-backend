@@ -2,7 +2,7 @@ package models
 
 type SuccessResponse struct {
 	Status   string `json:"status"`
-	Message  string `json:"message"`
+	Message  string `json:"message,omitempty"`
 	Data     any    `json:"data"`
 	MetaData any    `json:"meta_data"`
 }
