@@ -34,8 +34,7 @@ jobs:
         REPLICATE_API_TOKEN=${{ secrets.REPLICATE_API_TOKEN }}"
 
         echo "$ENV_CONTENT" > .env
-        mkdir -p test
-        echo "$ENV_CONTENT" > test/.env
+        echo "$ENV_CONTENT" > tests/.env
 
     - name: Build
       run: go build -v ./...
