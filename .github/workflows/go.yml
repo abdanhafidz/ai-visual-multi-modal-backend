@@ -25,7 +25,7 @@ jobs:
         DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         DB_PORT=${{ secrets.DB_PORT }}
         DB_NAME=${{ secrets.DB_NAME }}
-        SALT=${{ secrets.SALT }}
+        SALT=akunakpacarCHINDOFineshyt
         HOST_ADDRESS=localhost
         HOST_PORT=8080
         LOG_PATH=logs
