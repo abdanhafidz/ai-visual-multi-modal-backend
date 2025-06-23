@@ -61,6 +61,7 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 
 	req := openai.AudioRequest{
 		Model:    openai.Whisper1,
+		Prompt:   "please give it on summarized information",
 		FilePath: savedPath,
 	}
 

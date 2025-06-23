@@ -76,7 +76,13 @@ func NewPredictionController(predictionService services.PredictionService) Predi
 func (c *predictionController) Predict(ctx *gin.Context) {
 
 	var predictionRequest models.PredictionRequest
-
+	if err := ctx.ShouldBind(&predictionRequest); err != nil {
+		utils.ResponseFAIL(ctx, 400, models.Exception{
+			BadRequest: true,
+			Message:    "Invalid request format",
+		})
+		return
+	}
 	requestImage(ctx, &predictionRequest.ImageFile, &predictionRequest.ImageFileName)
 	requestAudio(ctx, &predictionRequest.AudioQuestionFile, &predictionRequest.AudioQuestionFilename)
 
