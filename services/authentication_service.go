@@ -7,5 +7,5 @@ type AuthenticationService interface {
 	Login(ctx context.Context, fingerPrint string)
 }
 
-type authenticationService interface {
+type authenticationService struct {
 }

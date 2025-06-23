@@ -53,9 +53,10 @@ func (s *predictionService) Predict(ctx context.Context, req models.PredictionRe
 		s.ThrowsError(s.openAIService.Error())
 		return nil, ""
 	}
-	// savePrediction := s.repository.SaveChatHistory(ctx, req.ImageFileName, sttOutput, replicateOutput)
-	// if s.ThrowsRepoException() {
-	// 	return nil, ""
-	// }
+
+	s.repository.SaveChatHistory(ctx, req.ImageFileName, sttOutput, replicateOutput)
+	if s.ThrowsRepoException() {
+		return nil, ""
+	}
 	return ttsOutput, replicateOutput
 }

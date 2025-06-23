@@ -6,6 +6,6 @@ import (
 
 var OpenAIClient *openai.Client
 
-func init() {
+func InitializeOpenAIClient() {
 	OpenAIClient = openai.NewClient(OPEN_AI_API_KEY)
 }

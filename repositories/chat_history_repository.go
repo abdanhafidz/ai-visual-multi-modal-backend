@@ -3,8 +3,8 @@ package repositories
 import (
 	"context"
 
-	"github.com/abdanhafidz/ai-visual-multi-modal-backend/config"
 	"github.com/abdanhafidz/ai-visual-multi-modal-backend/models"
+	"gorm.io/gorm"
 )
 
 type ChatHistoryRepository interface {
@@ -13,13 +13,14 @@ type ChatHistoryRepository interface {
 }
 
 type chatHistoryRepository struct {
-	repository[models.ChatHistory]
+	*repository[models.ChatHistory]
 }
 
-func NewChatHistoryRepository() ChatHistoryRepository {
+func NewChatHistoryRepository(db *gorm.DB) ChatHistoryRepository {
 	return &chatHistoryRepository{
-		repository: repository[models.ChatHistory]{
-			transaction: config.DB.Begin(),
+		repository: &repository[models.ChatHistory]{
+			entity:      models.ChatHistory{},
+			transaction: db,
 		},
 	}
 }

@@ -15,6 +15,7 @@ func LogError(errorLogged error) {
 		log.Fatal(err)
 	}
 
+	fmt.Println("Error Log :", errorLogged)
 	log.SetOutput(file)
 
 	log.Println("Error Log :", errorLogged)

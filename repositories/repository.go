@@ -47,9 +47,6 @@ func (repo *repository[T1]) RowsCount() int {
 	return repo.rowsCount
 }
 func (repo *repository[T1]) IsNoRecord() bool {
-
-	repo.noRecord = repo.transaction.RowsAffected == 0
-
 	return repo.noRecord
 }
 func (repo *repository[T1]) Transactions(ctx context.Context, act func(ctx context.Context, tx *gorm.DB)) {
@@ -98,9 +95,15 @@ func (repo *repository[T1]) FindAllPaginate(ctx context.Context, res any) {
 
 func (repo *repository[T1]) Create(ctx context.Context) {
 
-	tx := repo.transaction.Create(&repo.entity)
+	tx := repo.transaction.WithContext(ctx).Create(&repo.entity)
+	tx.WithContext(ctx).First(&repo.entity)
 	if tx.Error != nil {
+		repo.rowsCount = int(tx.RowsAffected)
+		repo.noRecord = repo.rowsCount == 0
+		repo.rowsError = tx.Error
+		repo.rowsError = repo.transaction.Error
 		tx.Rollback()
+		return
 	}
 	repo.rowsCount = int(tx.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0

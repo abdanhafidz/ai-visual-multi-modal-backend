@@ -34,9 +34,9 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
 
 # Buat direktori audio dan logs, beri izin dan kepemilikan ke appuser
-RUN mkdir -p /app/audio /app/logs && \
-    chmod -R 777 /app/audio /app/logs && \
-    chown -R appuser:appuser /app/audio /app/logs
+RUN mkdir -p /app/images /app/logs /app/audio && \
+    chmod -R 777 /app/images /app/logs /app/audio && \
+    chown -R appuser:appuser /app/images /app/logs /app/audio
 
 # Build aplikasi
 RUN go build -o main .

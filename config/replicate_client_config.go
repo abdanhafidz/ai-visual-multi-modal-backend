@@ -6,7 +6,7 @@ import (
 
 var ReplicateClient *replicate.Client
 
-func init() {
+func InitializeReplicateClient() {
 	ReplicateClient, err = replicate.NewClient(replicate.WithTokenFromEnv())
 	if err != nil {
 		panic(err)

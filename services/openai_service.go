@@ -35,7 +35,6 @@ func NewOpenAIService(repo repositories.Repository, openAIClient *openai.Client)
 }
 
 func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.File, filename string) string {
-
 	audioDir := "audio"
 
 	if err := os.MkdirAll(audioDir, os.ModePerm); err != nil {
@@ -45,14 +44,13 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 	}
 
 	savedPath := filepath.Join(audioDir, filepath.Base(filename))
-	outFile, err := os.Create(savedPath)
 
+	outFile, err := os.Create(savedPath)
 	if err != nil {
 		s.ThrowsException(&s.exception.AudioFileError, "Failed to save audio!")
 		s.ThrowsError(err)
 		return "Failed to save audio!"
 	}
-
 	defer outFile.Close()
 
 	if _, err := io.Copy(outFile, audioFile); err != nil {
@@ -72,15 +70,13 @@ func (s *openAIService) SpeechToText(ctx context.Context, audioFile multipart.Fi
 		s.ThrowsError(err)
 		return "Failed to create transcription!"
 	}
-	// if resp.Text != "" {
-	// 	outFile.Close()
-	// } else {
-	// 	s.ThrowsException(&s.exception.FailedTranscripting, "Failed to create transcription! [Nil text]")
-	// }
-
-	// if err := os.Remove(savedPath); err != nil {
-	// 	s.ThrowsError(err)
-	// }
+	if resp.Text != "" {
+		// Hapus file audio setelah transkripsi berhasil
+		outFile.Close()
+		if err := os.Remove(savedPath); err != nil {
+			s.ThrowsError(err)
+		}
+	}
 
 	return resp.Text
 }

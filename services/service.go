@@ -53,16 +53,16 @@ func (s *service[TRepo]) ThrowsRepoException() bool {
 
 		s.ThrowsException(&s.exception.QueryError, "Database error!")
 		s.ThrowsError(s.repository.RowsError())
-
 		return true
+
 	}
+	
 	if errors.Is(s.repository.RowsError(), gorm.ErrDuplicatedKey) {
 		s.ThrowsException(&s.exception.DataDuplicate, "Duplicated data!")
 
 		return true
 	}
 	if s.repository.IsNoRecord() {
-
 		s.ThrowsException(&s.exception.DataNotFound, "No record found")
 		return true
 	}

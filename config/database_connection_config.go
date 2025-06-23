@@ -17,7 +17,7 @@ var DB *gorm.DB
 var err error
 var Salt string
 
-func init() {
+func InitializeDatabase() {
 	godotenv.Load()
 	if err != nil {
 		fmt.Println("Gagal membaca file .env")
