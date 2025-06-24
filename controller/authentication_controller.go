@@ -23,7 +23,7 @@ func NewAuthenticationController(authenticationService services.AuthenticationSe
 func (c *authenticationController) Register(ctx *gin.Context) {
 	var loginRequest models.LoginRequest
 	c.RequestJSON(ctx, loginRequest)
-	if (loginRequest.IPAddress  == ""){
+	if loginRequest.IPAddress == "" {
 		loginRequest.IPAddress = ctx.ClientIP()
 	}
 	token := c.service.Register(ctx.Request.Context(), loginRequest.PassPhrase, loginRequest.TurnStile, loginRequest.IPAddress)
