@@ -56,7 +56,7 @@ func (repo *repository[T1]) Transactions(ctx context.Context, act func(ctx conte
 }
 func (repo *repository[T1]) Where(ctx context.Context) {
 	tx := repo.transaction
-	tx.WithContext(ctx).Model(&repo.entity)
+	tx.WithContext(ctx).Where(&repo.entity)
 	if tx.Error != nil {
 		repo.rowsCount = int(tx.RowsAffected)
 		repo.noRecord = repo.rowsCount == 0

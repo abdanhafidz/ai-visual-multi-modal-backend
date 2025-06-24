@@ -28,3 +28,25 @@ func TestCreateAccountRepository(t *testing.T) {
 	}
 	t.Logf("Account created successfully: %+v", result)
 }
+
+func TestGetAccountByPassPhraseRepository(t *testing.T) {
+	config.RunConfig()
+	var ctx context.Context
+	ctx = context.Background()
+	t.Log("DB Ptr :", config.DB)
+	accountRepo := repositories.NewAccountRepository(config.DB)
+	t.Log("Repo Ptr :", accountRepo)
+
+	passPhrase := "testpassphrases"
+	result := accountRepo.GetAccountByPassPhrase(ctx, passPhrase)
+	if accountRepo.RowsError() != nil {
+		t.Errorf("Error getting account: %v", accountRepo.RowsError())
+		return
+	}
+
+	if result.PassPhrase != passPhrase {
+		t.Errorf("Expected passPhrase %s, got %s", passPhrase, result.PassPhrase)
+	} else {
+		t.Logf("Account retrieved successfully: %+v", result)
+	}
+}

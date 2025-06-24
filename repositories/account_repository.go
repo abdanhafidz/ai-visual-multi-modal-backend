@@ -35,6 +35,6 @@ func (r *accountRepository) CreateAccount(ctx context.Context, passPhrase string
 func (r *accountRepository) GetAccountByPassPhrase(ctx context.Context, passPhrase string) (res models.Account) {
 	r.entity.PassPhrase = passPhrase
 	r.Where(ctx)
-	r.Find(ctx, res)
+	r.Find(ctx, &res)
 	return res
 }
