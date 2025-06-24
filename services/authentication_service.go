@@ -2,10 +2,11 @@ package services
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/9ssi7/turnstile"
 	models "github.com/abdanhafidz/ai-visual-multi-modal-backend/models"
 	"github.com/abdanhafidz/ai-visual-multi-modal-backend/repositories"
+	"github.com/meyskens/go-turnstile"
 )
 
 type AuthenticationService interface {
@@ -16,11 +17,11 @@ type AuthenticationService interface {
 
 type authenticationService struct {
 	*service[repositories.AccountRepository]
-	turnStileClient turnstile.Service
+	turnStileClient *turnstile.Turnstile
 	jwtService      JWTService
 }
 
-func NewAuthenticationService(accountRepository repositories.AccountRepository, turnStileClient turnstile.Service, jwtService JWTService) AuthenticationService {
+func NewAuthenticationService(accountRepository repositories.AccountRepository, turnStileClient *turnstile.Turnstile, jwtService JWTService) AuthenticationService {
 	return &authenticationService{
 		service:         &service[repositories.AccountRepository]{repository: accountRepository},
 		turnStileClient: turnStileClient,
@@ -28,14 +29,16 @@ func NewAuthenticationService(accountRepository repositories.AccountRepository, 
 	}
 }
 func (s *authenticationService) Register(ctx context.Context, passPhrase string, turnstile string, ip string) string {
-	verifiedTurnStile, err := s.turnStileClient.Verify(ctx, turnstile, ip)
-
+	turnStileResponse, err := s.turnStileClient.Verify(turnstile, ip)
+	fmt.Println(turnstile)
+	fmt.Println(turnStileResponse)
 	if err != nil {
-		s.ThrowsException(&s.exception.Unauthorized, "Turnstile error!")
+		s.ThrowsException(&s.exception.Unauthorized, "Turnstile error!, Turnstile Respose :")
+		s.ThrowsError(err)
 		return ""
 	}
 
-	if verifiedTurnStile {
+	if turnStileResponse.Success {
 		account := s.repository.CreateAccount(ctx, passPhrase)
 		if s.ThrowsRepoException() {
 			return ""
@@ -50,9 +53,8 @@ func (s *authenticationService) Register(ctx context.Context, passPhrase string,
 		return token
 	} else {
 		s.ThrowsException(&s.exception.Unauthorized, "Invalid turnstile payload!")
+		return ""
 	}
-
-	return ""
 }
 
 func (s *authenticationService) Login(ctx context.Context, passPhrase string) string {

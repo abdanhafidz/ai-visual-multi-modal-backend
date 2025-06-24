@@ -9,8 +9,8 @@ import (
 
 type AccountRepository interface {
 	Repository
-	CreateAccount(ctx context.Context, fingerPrint string) (res models.Account)
-	GetAccountByPassPhrase(ctx context.Context, fingePrint string) (res models.Account)
+	CreateAccount(ctx context.Context, passPhrase string) (res models.Account)
+	GetAccountByPassPhrase(ctx context.Context, passPhrase string) (res models.Account)
 }
 
 type accountRepository struct {

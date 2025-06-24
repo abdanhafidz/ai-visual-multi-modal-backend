@@ -8,7 +8,7 @@ import (
 
 type Account struct {
 	ID         uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
-	PassPhrase string    `gorm:"not null;"`
+	PassPhrase string    `gorm:"not null;uniqueIndex"`
 	CreatedAt  time.Time
 	DeletedAt  *time.Time `gorm:"column:deleted_at"` // perhatikan penamaan kolom
 }

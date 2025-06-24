@@ -1,11 +1,11 @@
 package config
 
-import "github.com/9ssi7/turnstile"
+import (
+	"github.com/meyskens/go-turnstile"
+)
 
-var TurnstileClient turnstile.Service
+var TurnstileClient *turnstile.Turnstile
 
 func InitTurnStileClient() {
-	TurnstileClient = turnstile.New(turnstile.Config{
-		Secret: TURNSTILE_SECRET_KEY,
-	})
+	TurnstileClient = turnstile.New(TURNSTILE_SECRET_KEY)
 }
