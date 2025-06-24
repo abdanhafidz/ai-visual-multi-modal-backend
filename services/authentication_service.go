@@ -59,15 +59,14 @@ func (s *authenticationService) Register(ctx context.Context, passPhrase string,
 
 func (s *authenticationService) Login(ctx context.Context, passPhrase string) string {
 	account := s.repository.GetAccountByPassPhrase(ctx, passPhrase)
-	if s.ThrowsRepoException() {
-		return ""
-	}
 
 	if s.repository.IsNoRecord() {
 		s.ThrowsException(&s.exception.Unauthorized, "Account not found!")
 		return " "
 	}
-
+	if s.ThrowsRepoException() {
+		return ""
+	}
 	token := s.jwtService.GenerateToken(ctx, models.JWTCustomClaims{IdUser: account.ID})
 	if s.jwtService.Error() != nil {
 		s.ThrowsException(&s.exception.Unauthorized, "JWTService Error")

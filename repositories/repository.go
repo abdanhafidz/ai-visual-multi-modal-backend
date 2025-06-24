@@ -55,36 +55,32 @@ func (repo *repository[T1]) Transactions(ctx context.Context, act func(ctx conte
 
 }
 func (repo *repository[T1]) Where(ctx context.Context) {
-	tx := repo.transaction
-	tx.WithContext(ctx).Where(&repo.entity)
+	tx := repo.transaction.WithContext(ctx).Model(&repo.entity)
 	if tx.Error != nil {
 		repo.rowsCount = int(tx.RowsAffected)
-		repo.noRecord = repo.rowsCount == 0
+		repo.noRecord = (repo.rowsCount == 0)
 		repo.rowsError = tx.Error
 		repo.rowsError = repo.transaction.Error
 		tx.Rollback()
 		return
 	}
-	repo.rowsCount = int(tx.RowsAffected)
-	repo.noRecord = repo.rowsCount == 0
 	repo.rowsError = tx.Error
+	return
 
 }
 func (repo *repository[T1]) Find(ctx context.Context, res any) {
-
-	tx := repo.transaction
-	tx.WithContext(ctx).First(&res)
-	if tx.Error != nil {
-		repo.rowsCount = int(tx.RowsAffected)
+	repo.transaction = repo.transaction.WithContext(ctx).First(&res)
+	if repo.transaction.Error != nil {
+		repo.rowsCount = int(repo.transaction.RowsAffected)
 		repo.noRecord = repo.rowsCount == 0
-		repo.rowsError = tx.Error
 		repo.rowsError = repo.transaction.Error
-		tx.Rollback()
+		repo.rowsError = repo.transaction.Error
+		repo.transaction.Rollback()
 		return
 	}
-	repo.rowsCount = int(tx.RowsAffected)
+	repo.rowsCount = int(repo.transaction.RowsAffected)
 	repo.noRecord = repo.rowsCount == 0
-	repo.rowsError = tx.Error
+	repo.rowsError = repo.transaction.Error
 
 }
 

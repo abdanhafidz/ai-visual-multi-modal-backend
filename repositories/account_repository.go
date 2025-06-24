@@ -21,7 +21,7 @@ func NewAccountRepository(db *gorm.DB) AccountRepository {
 	return &accountRepository{
 		repository: &repository[models.Account]{
 			entity:      models.Account{},
-			transaction: db,
+			transaction: db.Begin(),
 		},
 	}
 }

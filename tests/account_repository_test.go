@@ -17,6 +17,10 @@ func TestCreateAccountRepository(t *testing.T) {
 	t.Log("Repo Ptr :", accountRepo)
 
 	result := accountRepo.CreateAccount(ctx, "testpassphrases")
+	if accountRepo.IsNoRecord() {
+		t.Errorf("No Record Account: %v", accountRepo.RowsError())
+		return
+	}
 	if accountRepo.RowsError() != nil {
 		t.Errorf("Error creating account: %v", accountRepo.RowsError())
 		return
@@ -39,6 +43,10 @@ func TestGetAccountByPassPhraseRepository(t *testing.T) {
 
 	passPhrase := "testpassphrases"
 	result := accountRepo.GetAccountByPassPhrase(ctx, passPhrase)
+	if accountRepo.IsNoRecord() {
+		t.Errorf("No Record Account: %v", accountRepo.IsNoRecord())
+		return
+	}
 	if accountRepo.RowsError() != nil {
 		t.Errorf("Error getting account: %v", accountRepo.RowsError())
 		return
