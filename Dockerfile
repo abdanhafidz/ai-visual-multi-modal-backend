@@ -31,7 +31,7 @@ RUN --mount=type=secret,id=DB_PASSWORD,mode=0444,required=false \
     echo "LOG_PATH=logs" >> .env && \
     echo "EMAIL_VERIFICATION_DURATION=2" >> .env && \
     echo "OPEN_AI_API_KEY=$(cat /run/secrets/OPENAI_API_KEY 2>/dev/null)" >> .env && \
-    echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env
+    echo "REPLICATE_API_TOKEN=$(cat /run/secrets/REPLICATE_API_TOKEN 2>/dev/null)" >> .env && \
     echo "TURNSTILE_SECRET_KEY =$(cat /run/secrets/TURNSTILE_SECRET_KEY>/dev/null)" >> .env
 # Buat direktori audio dan logs, beri izin dan kepemilikan ke appuser
 RUN mkdir -p /app/images /app/logs /app/audio && \
