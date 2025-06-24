@@ -15,8 +15,9 @@ func TestCreateAccountRepository(t *testing.T) {
 	t.Log("DB Ptr :", config.DB)
 	accountRepo := repositories.NewAccountRepository(config.DB)
 	t.Log("Repo Ptr :", accountRepo)
-
-	result := accountRepo.CreateAccount(ctx, "testpassphrases")
+	passPhrase := "testpassphrases"
+	accountRepo.DeleteByPassPhrase(ctx, passPhrase)
+	result := accountRepo.CreateAccount(ctx, passPhrase)
 	if accountRepo.IsNoRecord() {
 		t.Errorf("No Record Account: %v", accountRepo.RowsError())
 		return
@@ -27,6 +28,7 @@ func TestCreateAccountRepository(t *testing.T) {
 	}
 
 	expectedPassPhrase := "testpassphrases"
+
 	if result.PassPhrase != expectedPassPhrase {
 		t.Errorf("Expected passPhrase %s, got %s", expectedPassPhrase, result.PassPhrase)
 	}
@@ -42,6 +44,7 @@ func TestGetAccountByPassPhraseRepository(t *testing.T) {
 	t.Log("Repo Ptr :", accountRepo)
 
 	passPhrase := "testpassphrases"
+
 	result := accountRepo.GetAccountByPassPhrase(ctx, passPhrase)
 	if accountRepo.IsNoRecord() {
 		t.Errorf("No Record Account: %v", accountRepo.IsNoRecord())

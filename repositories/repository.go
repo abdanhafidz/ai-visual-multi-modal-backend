@@ -123,7 +123,6 @@ func (repo *repository[T1]) Create(ctx context.Context) {
 }
 
 func (repo *repository[T1]) Update(ctx context.Context) {
-
 	tx := repo.transaction
 	tx.WithContext(ctx).Save(&repo.entity).Find(&repo.entity)
 	if tx.Error != nil {

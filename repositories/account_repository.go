@@ -11,6 +11,7 @@ type AccountRepository interface {
 	Repository
 	CreateAccount(ctx context.Context, passPhrase string) (res models.Account)
 	GetAccountByPassPhrase(ctx context.Context, passPhrase string) (res models.Account)
+	DeleteByPassPhrase(ctx context.Context, passPhrase string)
 }
 
 type accountRepository struct {
@@ -37,4 +38,8 @@ func (r *accountRepository) GetAccountByPassPhrase(ctx context.Context, passPhra
 	r.Where(ctx)
 	r.Find(ctx, &res)
 	return res
+}
+
+func (r *accountRepository) DeleteByPassPhrase(ctx context.Context, passPhrase string) {
+	r.transaction.Where("pass_phrase = ?", passPhrase).Delete(&r.entity)
 }
