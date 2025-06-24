@@ -63,7 +63,7 @@ func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 		"image":    file,
 		"question": question,
 	}
-	prediction, err := s.client.CreatePrediction(ctx, s.version, input, nil, false)
+	prediction, err := s.client.CreatePredictionWithDeployment(ctx, "spuuntries", "kp3l", input, nil, false)
 
 	if err != nil {
 		s.ThrowsException(&s.exception.ReplicateConnectionRefused, "Failed to create prediction via replicate service")
@@ -79,6 +79,7 @@ func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 		return ""
 	}
 	rawOutput := prediction.Output
+	fmt.Println(rawOutput)
 	// Parsing output
 	outputSlice, ok := rawOutput.([]interface{})
 	var result string
