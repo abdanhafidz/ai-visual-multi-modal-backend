@@ -13,7 +13,7 @@ import (
 func TestAskImage(t *testing.T) {
 	config.RunConfig()
 	var dummyRepo repositories.Repository
-	replicateService := services.NewReplicateService(dummyRepo, config.ReplicateClient, "spuuntries/urna-kp3l:9338a4573a17178b70515c0ef2e613d3b4213e2dc860ef23b3ad6149dacadc1e")
+	replicateService := services.NewReplicateService(dummyRepo, config.ReplicateClient, "spuuntries/urna-kp3l:9338a4573a17178b70515c0ef2e613d3b4213e2dc860ef23b3ad6149dacadc1e", "9338a4573a17178b70515c0ef2e613d3b4213e2dc860ef23b3ad6149dacadc1e")
 	ctx := context.Background()
 	filename := "foto_pacarku.jpg"
 	imageFile, err := os.Open("test_data/" + filename)

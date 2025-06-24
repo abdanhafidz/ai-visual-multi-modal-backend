@@ -18,15 +18,17 @@ type ReplicateService interface {
 
 type replicateService struct {
 	*service[repositories.Repository]
-	client *replicate.Client
-	model  string
+	client  *replicate.Client
+	model   string
+	version string
 }
 
-func NewReplicateService(repo repositories.Repository, replicateClient *replicate.Client, model string) ReplicateService {
+func NewReplicateService(repo repositories.Repository, replicateClient *replicate.Client, model string, version string) ReplicateService {
 	service := replicateService{
 		service: &service[repositories.Repository]{repository: repo},
 		client:  replicateClient,
-		model:   model, // e.g., "owner/moondream:versionHash"
+		model:   model,
+		version: version, // e.g., "owner/moondream:versionHash"
 	}
 	return &service
 }
@@ -61,12 +63,22 @@ func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 		"image":    file,
 		"question": question,
 	}
-	rawOutput, err := s.client.Run(ctx, s.model, input, nil)
+	prediction, err := s.client.CreatePrediction(ctx, s.version, input, nil, false)
+
 	if err != nil {
+		s.ThrowsException(&s.exception.ReplicateConnectionRefused, "Failed to create prediction via replicate service")
 		s.ThrowsError(err)
 		return ""
 	}
 
+	errWait := s.client.Wait(ctx, prediction)
+
+	if errWait != nil {
+		s.ThrowsException(&s.exception.ReplicateConnectionRefused, "Time out Waiting Replicate Client")
+		s.ThrowsError(err)
+		return ""
+	}
+	rawOutput := prediction.Output
 	// Parsing output
 	outputSlice, ok := rawOutput.([]interface{})
 	var result string

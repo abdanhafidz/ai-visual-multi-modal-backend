@@ -17,6 +17,7 @@ func NewPredictionModule() controller.PredictionController {
 		chatHistoryRepository,
 		config.ReplicateClient,
 		"spuuntries/urna-kp3l:9338a4573a17178b70515c0ef2e613d3b4213e2dc860ef23b3ad6149dacadc1e",
+		"9338a4573a17178b70515c0ef2e613d3b4213e2dc860ef23b3ad6149dacadc1e",
 	)
 	predictionService := services.NewPredictionService(
 		chatHistoryRepository,
