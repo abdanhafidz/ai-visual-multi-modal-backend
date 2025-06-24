@@ -18,17 +18,17 @@ type ReplicateService interface {
 
 type replicateService struct {
 	*service[repositories.Repository]
-	client  *replicate.Client
-	model   string
-	version string
+	client          *replicate.Client
+	deploymentOwner string
+	deploymentName  string
 }
 
-func NewReplicateService(repo repositories.Repository, replicateClient *replicate.Client, model string, version string) ReplicateService {
+func NewReplicateService(repo repositories.Repository, replicateClient *replicate.Client, deploymentOwner string, deploymentName string) ReplicateService {
 	service := replicateService{
-		service: &service[repositories.Repository]{repository: repo},
-		client:  replicateClient,
-		model:   model,
-		version: version, // e.g., "owner/moondream:versionHash"
+		service:         &service[repositories.Repository]{repository: repo},
+		client:          replicateClient,
+		deploymentOwner: deploymentOwner,
+		deploymentName:  deploymentName, // e.g., "owner/moondream:versionHash"
 	}
 	return &service
 }
@@ -63,7 +63,7 @@ func (s *replicateService) AskImage(ctx context.Context, imageFile multipart.Fil
 		"image":    file,
 		"question": question,
 	}
-	prediction, err := s.client.CreatePredictionWithDeployment(ctx, "spuuntries", "kp3l", input, nil, false)
+	prediction, err := s.client.CreatePredictionWithDeployment(ctx, s.deploymentOwner, s.deploymentName, input, nil, false)
 
 	if err != nil {
 		s.ThrowsException(&s.exception.ReplicateConnectionRefused, "Failed to create prediction via replicate service")
